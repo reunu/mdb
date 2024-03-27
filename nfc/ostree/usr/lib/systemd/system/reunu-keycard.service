@@ -1,0 +1,15 @@
+[Unit]
+Description=reunu Keycard Service
+Wants=redis.service
+After=redis.service
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=5
+WorkingDirectory=/home/root/reunu-keycard
+ExecStart=/home/root/reunu-keycard/reunu-keycard
+LimitAS=128M
+
+[Install]
+WantedBy=multi-user.target
