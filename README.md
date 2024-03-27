@@ -16,8 +16,9 @@ Proceed only if you are confident in your understanding of the process. Incorrec
 5. **Disk Identification**: Identify the external disk drive and its partition. This can be achieved using `fdisk` or `lsblk` commands.
 6. **Mount Partition**: Proceed to mount the identified partition.
 7. **Locate OStree Branch**: Determine the OStree branch in use by examining the `bootargs` parameter within `/boot/loader/uEnv.txt`.
-8. **Copy NFC Directory**: Transfer the contents of the `nfc/` directory from this repository into your OStree root directory.
-9. **Service File Removal**: Delete the `etc/systemd/system/multi-user.target.wants/unu-keycard.service` file from your OStree root.
+8. **Copy NFC Directory**: Transfer the contents of the `nfc/ostree` directory from this repository into your OStree root directory.
+8. **Copy NFC Directory**: Transfer the `nfc/home` directory from this repository into the MDB root directory.
+9. **Service Symlink Removal**: Delete the `etc/systemd/system/multi-user.target.wants/unu-keycard.service` symlink from your OStree root.
 10. **Root Password Update**: Update the root password in your OStree's `etc/shadow` file with a password of your choosing.
 
 After completing these steps, unmount the drive, reconnect the DBC to the MDB, and restart the MDB. Upon reboot, you should be able to access the serial console using your new password.
