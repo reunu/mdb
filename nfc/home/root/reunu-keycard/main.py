@@ -57,8 +57,8 @@ class PN7150Extended(PN7150):
                         if uid in self.master_uids:
                             print(f"Master UID detected: {uid} - Switching to learn mode")
                             self._learn_mode = True
-                            subprocess.run([LED_SCRIPT, '3', 'fade06_brake_off_to_full.bin'], shell=False)
-                            subprocess.run([LED_SCRIPT, '7', 'fade06_brake_off_to_full.bin'], shell=False)
+                            subprocess.run([LED_SCRIPT, '3', '06'], shell=False)
+                            subprocess.run([LED_SCRIPT, '7', '06'], shell=False)
                         elif uid in self.authorized_uids:
                             print(f"Authorized UID detected: {uid} - Executing script")
                             subprocess.run([GREEN_LED_SCRIPT, '1'], shell=False)
@@ -71,8 +71,8 @@ class PN7150Extended(PN7150):
                         if uid in self.master_uids:
                             print(f"Master UID detected: {uid} - Switching off learn mode")
                             self._learn_mode = False
-                            subprocess.run([LED_SCRIPT, '3', 'fade12_license_full_to_off.bin'], shell=False)
-                            subprocess.run([LED_SCRIPT, '7', 'fade12_license_full_to_off.bin'], shell=False)
+                            subprocess.run([LED_SCRIPT, '3', '12'], shell=False)
+                            subprocess.run([LED_SCRIPT, '7', '12'], shell=False)
                             if len(self._newUIDs) == 0:
                                 print('nothing learned')
                             else:
@@ -85,9 +85,9 @@ class PN7150Extended(PN7150):
                             print(f"UID detected: {uid} - Learning")
                             subprocess.run([GREEN_LED_SCRIPT, '1'], shell=False)
                             self._newUIDs.append(uid)
-                            subprocess.run([LED_SCRIPT, '1', 'fade10_blinker.bin'], shell=False)
-                            subprocess.run([LED_SCRIPT, '1', 'fade10_blinker.bin'], shell=False)
-                            subprocess.run([LED_SCRIPT, '1', 'fade10_blinker.bin'], shell=False)
+                            subprocess.run([LED_SCRIPT, '1', '10'], shell=False)
+                            subprocess.run([LED_SCRIPT, '1', '10'], shell=False)
+                            subprocess.run([LED_SCRIPT, '1', '10'], shell=False)
                             time.sleep(1)
                             subprocess.run([GREEN_LED_SCRIPT, '0'], shell=False)
 
