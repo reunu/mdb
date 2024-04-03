@@ -1,0 +1,95 @@
+#! /bin/sh
+
+# Keep this POSIX, no bash-isms
+
+# make it easy to pipe/save stderr
+exec 2>&1
+
+# print what we do
+set -x
+if [ 0 != $(id -u) ]; then
+    echo "Please run as root"
+    exit 1
+fi
+if [ -n "${SUDO_COMMAND+1}" ]; then
+    echo "Please run as root"
+    echo "Running under sudo confuses the results."
+fi
+
+
+id
+uname -a
+cat /etc/*release
+if command -v gpsd; then
+    # get version
+    gpsd -V
+    # get as-built options
+    gpsd -h | grep '^#.*enabled'
+fi
+# use sockstat, lsof, netstat or ss, depending, for owner of port 2947
+if command -v sockstat; then
+    # sockstat for FreeBSD
+    sockstat -l | sed -nE '1p;/:2947 |gpsd/p'
+elif command -v lsof; then
+    lsof -iTCP:2947 -s TCP:LISTEN
+    # gpsd open files
+    lsof -c gpsd | sed -nE '1p;/CHR|LISTEN/p'
+elif command -v netstat; then
+    # FreeBSD does not support "-n"
+    netstat -lp | sed -nE '2p;/:2947 |gpsd/p'
+elif command -v ss; then
+    ss -ltpn | sed -nE '1p;/:2947 |gpsd/p'
+fi
+
+# busybox does not support ps a or x options, so gall back to 'l'
+ps ax || ps l |  sed -nE '1p;/gpsd/p'
+
+if command -v gpspipe; then
+    gpspipe -V
+    # try to get JSON header
+    gpspipe -w -n 2 -x 20
+fi
+if command -v ipcs; then
+    ipcs -m | sed -nE '/key/p;/KEY/p;/0x4e5450/p'
+fi
+if command -v ntpshmmon; then
+    ntpshmmon -V
+    # 6 lines, or 10 seconds, of ntpshmmon
+    ntpshmmon -n 6 -t 10
+fi
+# check for /dev/pps*, /dev/ttyA*, ttyS*, ttyT*, ttyU*, gps*
+ls -l /dev/pps* /dev/tty[ASTU]* /dev/gps*
+# check for USB receivers
+if command -v lsusb; then
+    lsusb
+fi
+echo PYTHONPATH $PYTHONPATH
+if command -v gpscat; then
+    head -n 1 `command -v gpscat`
+fi
+if command -v python; then
+    python -V
+    python -c "import gps;print(gps.__version__)"
+fi
+if command -v python3; then
+    python3 -V
+    python3 -c "import gps;print(gps.__version__)"
+fi
+
+if command -v systemctl; then
+    cat /etc/*/gpsd
+    systemctl cat gpsd.service
+    systemctl cat gpsd.socket
+    systemctl status gpsd.service
+    systemctl status gpsd.socket
+    journalctl -u gpsd.service --since today
+fi
+if command -v aa-status; then
+    aa-status
+elif command -v apparmor_status; then
+    apparmor_status
+fi
+# do not print the rest
+set +x
+echo "Please send the entire, untouched output."
+exit 0

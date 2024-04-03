@@ -1,0 +1,11 @@
+[Unit]
+Description=GPS (Global Positioning System) Daemon
+
+[Service]
+Type=forking
+EnvironmentFile=-/etc/default/gpsd
+EnvironmentFile=-/etc/sysconfig/gpsd
+ExecStart=/usr/local/sbin/gpsd -n /dev/ttyUSB1
+
+[Install]
+WantedBy=multi-user.target

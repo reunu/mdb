@@ -1,0 +1,11 @@
+Metadata-Version: 1.0
+Name: gps
+Version: 3.25
+Summary: Python libraries for the gpsd service daemon
+Home-page: https://gpsd.io/
+Author: the GPSD project
+Author-email: gpsd-dev@lists.nongnu.org
+License: BSD
+Keywords: GPS
+Description: The gpsd service daemon can monitor one or more GPS devices connected to a host computer, making all data on the location and movements of the sensors available to be queried on TCP port 2947.
+Platform: UNKNOWN
