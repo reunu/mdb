@@ -45,6 +45,21 @@ def connect_to_uart(port='/dev/ttyUSB0'):
             ser.close()
         print("Connection closed.")
 
+def cls():
+    os.system('clear')
+
+def format_hex_string(hex_input):
+    # Remove non-alphanumeric characters
+    cleaned_input = ''.join(filter(str.isalnum, hex_input))
+    # Convert to uppercase
+    cleaned_input = cleaned_input.upper()
+    # Split into pairs of characters
+    formatted_hex = ' '.join(cleaned_input[i:i+2] for i in range(0, len(cleaned_input), 2))
+    return formatted_hex
+
+def write_file(file_path, content):
+    with open(file_path, 'w') as file:
+        file.write(content)
 
 def get_disks():
     """List all disks currently connected to the system."""
@@ -149,17 +164,23 @@ def enable_systemd_service(rootdir, service_name):
 
 ##################################################
 
+cls()
+
 print("!!! Please make sure the board is powered down and your UART and USB are connected !!!")
 
 port = input("Enter UART device name (or press ENTER for the default /dev/ttyUSB0): ")
 if port == "":
     port = "/dev/ttyUSB0"
 
+cls()
+
 connect_to_uart(port)
 
 initial_disks = get_disks()
 
 time.sleep(5)
+
+cls()
 
 new_disk = find_new_disk(initial_disks)
 if new_disk:
@@ -184,14 +205,14 @@ if new_disk:
     if nfcmod:
         setadminuid = prompt_binary_input("Do you want to enter an admin NFC UID now?")
         if setadminuid:
-            adminuid = prompt("Enter admin UID (uppercase, space separated, e.g. 'AA BB CC DD'): ")
+            adminuid = format_hex_string(input("Enter admin UID: "))
 
-
-
-    print()
+    cls()
     print("----")
     print("Summary:")
     print("NFC mod: "+str(nfcmod))
+    if setadminuid:
+        print("Admin NFC UID: "+adminuid)
     print("GPS time mod: "+str(gpstime))
     print("Disable cloud communication: "+str(disableuplink))
     print("Change root password: "+str(setrootpw))
@@ -199,6 +220,8 @@ else:
     print("No new disk detected. Please make sure the disk is properly attached.")
 
 if prompt_binary_input("Continue?"):
+    
+    cls()
 
     print("Working...")
 
@@ -210,6 +233,8 @@ if prompt_binary_input("Continue?"):
         install("nfc/ostree", rootdir)
         disable_systemd_service(rootdir, "unu-keycard.service")
         enable_systemd_service(rootdir, "reunu-keycard.service")
+        if setadminuid:
+            write_file(rootdir+"etc/reunu-keycard/master_uids.txt", adminuid)
 
     if disableuplink:
         disable_systemd_service(rootdir, "unu-uplink.service")
