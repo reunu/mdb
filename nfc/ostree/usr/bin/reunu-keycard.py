@@ -8,11 +8,11 @@ from PN7150 import PN7150
 
 # Assuming the output from the NFC reader contains lines that look like "UID : [UID_VALUE]"
 _OUTPUT_UID_PREFIX = 'NFCID1 :'
-AUTHORIZED_UIDS_FILE = 'authorized_uids.txt'
-MASTER_UIDS_FILE = 'master_uids.txt'
-KEYCARD_SCRIPT = '/home/root/keycard.sh'
-LED_SCRIPT = '/home/root/ledcontrol.sh'
-GREEN_LED_SCRIPT = '/home/root/greenled.sh'
+AUTHORIZED_UIDS_FILE = '/etc/reunu-keycard/authorized_uids.txt'
+MASTER_UIDS_FILE = '/etc/reunu-keycard/master_uids.txt'
+KEYCARD_SCRIPT = '/usr/bin/keycard.sh'
+LED_SCRIPT = '/usr/bin/ledcontrol.sh'
+GREEN_LED_SCRIPT = '/usr/bin/greenled.sh'
 _CMD_POLL = '/usr/sbin/nfcDemoApp poll'
 
 

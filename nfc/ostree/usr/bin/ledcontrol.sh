@@ -8,4 +8,4 @@
 # 6: Blinker HL
 # 7: Blinker VR
 
-/home/root/ioctl /dev/pwm_led$1 0x00007545 -v $2 > /dev/null
+/usr/bin/ioctl /dev/pwm_led$1 0x00007545 -v $2 > /dev/null
