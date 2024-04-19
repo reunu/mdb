@@ -64,17 +64,13 @@ def mount_disk(disk, mount_point="/mnt/unu"):
     print(f"Mounted {partition} to {mount_point}")
 
 def get_ostree_from_loader(file_path):
-    try:
-        with open(file_path, 'r') as file:
-            first_line = file.readline()
-            hash_pattern = r'poky-([a-f0-9]+)'  # Regex to find the hash in the line
-            match = re.search(hash_pattern, first_line)
-            if match:
-                return match.group(1)
-            else:
-                return "No hash found."
-    except FileNotFoundError:
-        return "File not found."
+    with open(file_path, 'r') as file:
+        for line in file:
+            if "bootargs=ostree=" in line:
+                start_index = line.find("bootargs=ostree=") + len("bootargs=ostree=")
+                path = line[start_index:].strip()
+                return path  # Return immediately after finding the path
+    return None  # Return None if the line is not found
 
 def prompt_binary_input(question):
     while True:
@@ -168,8 +164,8 @@ time.sleep(5)
 new_disk = find_new_disk(initial_disks)
 if new_disk:
     mount_disk(new_disk, mount_point)
-    ostree_hash = get_ostree_from_loader("/mnt/unu/boot/loader/uEnv.txt")
-    rootdir = "/mnt/unu/ostree/boot.1/poky/"+ostree_hash+"/0/"
+    ostree = get_ostree_from_loader("/mnt/unu/boot/loader/uEnv.txt")
+    rootdir = "/mnt/unu"+ostree+"/"
     print("Root directory: "+rootdir)
 
 
