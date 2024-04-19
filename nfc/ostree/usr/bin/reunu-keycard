@@ -1,2 +1,2 @@
 #!/bin/sh
-python3 reunu-keycard.py
+python3 /usr/bin/reunu-keycard.py

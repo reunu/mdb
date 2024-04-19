@@ -92,18 +92,8 @@ def install(source, target):
         print(f"Error: Source directory {source} does not exist.")
         return
 
-    os.makedirs(target, exist_ok=True)
-    
-    for item in os.listdir(source):
-        s = os.path.join(source, item)
-        d = os.path.join(target, item)
-        
-        if os.path.isdir(s):
-            shutil.copytree(s, d, symlinks=True, dirs_exist_ok=True)  # copy directories
-        else:
-            shutil.copy2(s, d, follow_symlinks=False)  # copy files
-
-    # print(f"All files and directories have been copied from {source} to {target}.")
+    for sourcedir in os.listdir(source):
+        os.system("cp -a "+source+"/"+sourcedir+" "+target)
 
 def write_rootpw(newpw, rootdir):
     shadow_path = rootdir+'/etc/shadow'  # Adjust the path to your external drive's shadow file
@@ -151,9 +141,12 @@ def enable_systemd_service(rootdir, service_name):
         # Ensure the target directory exists
         os.makedirs(os.path.dirname(symlink_path), exist_ok=True)
 
-        # Create the symlink
-        os.symlink(target, symlink_path)
-        print(f"Service {service_name} has been successfully enabled by creating a symlink at {symlink_path}.")
+        if os.path.islink(symlink_path):
+            print(f"Service {service_name} is already enabled.")
+        else:
+            # Create the symlink
+            os.symlink(target, symlink_path)
+            print(f"Service {service_name} has been successfully enabled by creating a symlink at {symlink_path}.")
 
     except Exception as e:
         print(f"Failed to enable the service {service_name}: {e}")
@@ -176,7 +169,7 @@ new_disk = find_new_disk(initial_disks)
 if new_disk:
     mount_disk(new_disk, mount_point)
     ostree_hash = get_ostree_from_loader("/mnt/unu/boot/loader/uEnv.txt")
-    rootdir = "/mnt/unu/ostree/boot.1/poky/"+ostree_hash+"/0"
+    rootdir = "/mnt/unu/ostree/boot.1/poky/"+ostree_hash+"/0/"
     print("Root directory: "+rootdir)
 
 
@@ -211,6 +204,8 @@ else:
 
 if prompt_binary_input("Continue?"):
 
+    print("Working...")
+
     if setrootpw:
         newrootpw = crypt.crypt(newrootpw, crypt.mksalt(crypt.METHOD_SHA512))
         write_rootpw(newrootpw, rootdir)
@@ -228,5 +223,7 @@ if prompt_binary_input("Continue?"):
 
 ### end
 
+subprocess.run(['sync'])
 subprocess.run(['umount', mount_point], check=True)
+print("All actions completed. Bye!")
 
