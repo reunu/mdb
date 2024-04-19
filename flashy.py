@@ -183,8 +183,10 @@ if new_disk:
     # user prompts
 
     nfcmod = prompt_binary_input("Install NFC keycard replacement?")
-    gpstime = prompt_binary_input("Install GPS time mod?")
     disableuplink = prompt_binary_input("Disable unu server communication?")
+    gpstime = prompt_binary_input("Install GPS time mod? (also disables cloud communication)")
+    if gpstime:
+        disableuplink = True
     setrootpw = prompt_binary_input("Change default root password?")
 
     if setrootpw:
@@ -222,6 +224,7 @@ if prompt_binary_input("Continue?"):
         disable_systemd_service(rootdir, "unu-uplink.service")
         disable_systemd_service(rootdir, "unu-modem.service")
         disable_systemd_service(rootdir, "unu-ota-update.service")
+
 
 ### end
 
