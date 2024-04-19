@@ -206,6 +206,8 @@ if new_disk:
         setadminuid = prompt_binary_input("Do you want to enter an admin NFC UID now?")
         if setadminuid:
             adminuid = format_hex_string(input("Enter admin UID: "))
+    else:
+        setadminuid = False
 
     cls()
     print("----")
@@ -242,6 +244,10 @@ if prompt_binary_input("Continue?"):
         disable_systemd_service(rootdir, "unu-ota-update.service")
         disable_systemd_service(rootdir, "unu-activation.service")
 
+    if gpstime:
+        install("gps/ostree", rootdir)
+        enable_systemd_service(rootdir, "reunu-gpsd.service")
+        enable_systemd_service(rootdir, "reunu-enablemodem.service")
 
 ### end
 

@@ -1,0 +1,8 @@
+[Unit]
+Description=Reunu modem enabler
+
+[Service]
+ExecStart=/usr/bin/reunu-enablemodem.sh
+
+[Install]
+WantedBy=multi-user.target
