@@ -13,6 +13,7 @@ def connect_to_uart(port='/dev/ttyUSB0'):
         # Set up serial connection
         ser = serial.Serial(port, 115200, timeout=1)
         print("Connected to "+port+" at 115200 baud.")
+        print("Now turn on the 12V power supply to the MDB.")
 
         # Wait for the boot string
         while True:
@@ -36,6 +37,7 @@ def connect_to_uart(port='/dev/ttyUSB0'):
         # Clean up
         ser.close()
         print("Connection closed.")
+        print("Please wait.")
 
     except serial.SerialException as e:
         print(f"Error opening serial port: {e}")
