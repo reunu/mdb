@@ -7,8 +7,8 @@ After=redis.service
 Type=simple
 Restart=always
 RestartSec=5
-WorkingDirectory=/home/root/reunu-keycard
-ExecStart=/home/root/reunu-keycard/reunu-keycard
+WorkingDirectory=/usr/bin/reunu-keycard
+ExecStart=/usr/bin/reunu-keycard
 LimitAS=128M
 
 [Install]
