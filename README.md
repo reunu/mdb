@@ -1,3 +1,6 @@
+# DEPRECATED #
+## THE FOLLOWING INSTRUCTIONS ARE OUT OF DATE ##
+
 ## Preliminary Flashing Instructions
 
 The following steps are intended for those familiar with hardware modification and software configuration. Many of these steps will be automated in a future script.
