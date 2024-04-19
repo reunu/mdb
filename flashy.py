@@ -214,10 +214,15 @@ if prompt_binary_input("Continue?"):
         write_rootpw(newrootpw, rootdir)
 
     if nfcmod:
-        install("nfc/home", "/mnt/unu/ostree/deploy/poky/var/rootdirs/home")
+        install("nfc/home", mount_point+"/ostree/deploy/poky/var/rootdirs/home")
         install("nfc/ostree", rootdir)
         disable_systemd_service(rootdir, "unu-keycard.service")
         enable_systemd_service(rootdir, "reunu-keycard.service")
+
+    if disableuplink:
+        disable_systemd_service(rootdir, "unu-uplink.service")
+        disable_systemd_service(rootdir, "unu-modem.service")
+        disable_systemd_service(rootdir, "unu-ota-update.service")
 
 ### end
 
