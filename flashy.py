@@ -219,6 +219,7 @@ if prompt_binary_input("Continue?"):
         disable_systemd_service(rootdir, "unu-uplink.service")
         disable_systemd_service(rootdir, "unu-modem.service")
         disable_systemd_service(rootdir, "unu-ota-update.service")
+        disable_systemd_service(rootdir, "unu-activation.service")
 
 
 ### end
