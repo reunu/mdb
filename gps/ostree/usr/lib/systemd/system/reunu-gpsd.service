@@ -6,7 +6,6 @@ Type=forking
 EnvironmentFile=-/etc/default/gpsd
 EnvironmentFile=-/etc/sysconfig/gpsd
 ExecStart=/usr/sbin/gpsd -n /dev/ttyUSB1
-StartLimitIntervalSec=0
 Restart=always
 ExecStartPre=/bin/sleep 60
 

@@ -1,9 +1,9 @@
 [Unit]
-Description=Reunu modem enabler
+Description=Reunu wakeup
 
 [Service]
 Type=oneshot
 ExecStart=/usr/bin/reunu-enablemodem.sh
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=suspend.target

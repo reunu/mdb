@@ -250,6 +250,7 @@ if prompt_binary_input("Continue?"):
         install("gps/ostree", rootdir)
         enable_systemd_service(rootdir, "reunu-gpsd.service")
         enable_systemd_service(rootdir, "reunu-enablemodem.service")
+        enable_systemd_service(rootdir, "reunu-wakeup.service")
 
 ### end
 
