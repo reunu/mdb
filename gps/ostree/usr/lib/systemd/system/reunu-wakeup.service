@@ -3,7 +3,7 @@ Description=Reunu wakeup
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/reunu-enablemodem.sh
+ExecStart=/usr/bin/reunu-wakeup.sh
 
 [Install]
 WantedBy=suspend.target
