@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Notify Discord
-        uses: rjstone/discord-webhook-notify@v1
+      uses: rjstone/discord-webhook-notify@v1
         with:
             severity: info
             webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
